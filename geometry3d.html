@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="3D 立体几何 playground：拖拽旋转正方体、棱柱、棱锥、圆柱、圆锥、球，数一数顶点、棱、面，验证欧拉公式。">
+  <title>立体几何 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧊</text></svg>">
+</head>
+<body data-page="geometry3d" data-accent="#06b6d4">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 6 站 · 立体几何</span>
+      <h1><span class="hero-emoji">🧊</span>立体几何：把几何体拿在手里转</h1>
+      <p>空间想象力的最好训练方式，就是亲手把几何体转来转去。拖一拖，数一数顶点、棱、面——欧拉公式正在等你发现。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>可旋转的几何体展台</h3>
+      <p class="widget-desc"><b>按住画面拖动</b>即可旋转几何体；切换下方展品，边转边数：顶点 V、棱 E、面 F 各是多少？多面体还自动验证欧拉公式 V − E + F = 2。</p>
+
+      <div class="controls">
+        <div class="seg" id="gSel">
+          <button type="button" class="on" data-i="0">正方体</button>
+          <button type="button" data-i="1">三棱柱</button>
+          <button type="button" data-i="2">四棱锥</button>
+          <button type="button" data-i="3">圆柱</button>
+          <button type="button" data-i="4">圆锥</button>
+          <button type="button" data-i="5">球</button>
+        </div>
+        <label class="ctrl"><input type="checkbox" id="gAuto" checked> 自动旋转</label>
+        <button class="btn" id="gResetView">↺ 复位视角</button>
+      </div>
+
+      <div class="canvas-wrap grab"><canvas id="gCanvas" style="height:440px"></canvas></div>
+      <div class="solid-facts">
+        <span class="chip">当前：<b id="vName">正方体</b></span>
+        <span class="chip">顶点 V = <b id="vV">8</b></span>
+        <span class="chip">棱 E = <b id="vE">12</b></span>
+        <span class="chip">面 F = <b id="vF">6</b></span>
+        <span class="chip" id="vEuler">V − E + F = <b id="vEulerV">2</b> ✓</span>
+      </div>
+      <div class="note-box" id="vNote">✅ 正方体是<b>简单多面体</b>：无论怎么转、怎么数，V − E + F 永远等于 2——这就是著名的<b>欧拉公式</b>。</div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>棱柱与棱锥</h3>
+      <ul class="keypoints">
+        <li><b>n 棱柱</b>：两个全等的 n 边形底面 + n 个侧面（平行四边形）。顶点 2n、棱 3n、面 n + 2。</li>
+        <li><b>n 棱锥</b>：一个 n 边形底面 + n 个三角形侧面汇于顶点。顶点 n + 1、棱 2n、面 n + 1。</li>
+        <li>正棱锥的<b>斜高</b>：顶点到底边中点的距离，常用于算侧面积。</li>
+      </ul>
+      <h3>欧拉公式（简单多面体）</h3>
+      <span class="tex-block tex" data-tex="V - E + F = 2"></span>
+      <p>只对"简单多面体"成立（表面连续变形能变成球面的）。圆柱、圆锥、球是<b>旋转体</b>，表面含曲面，无法直接数"棱"和"面"，所以实验里显示的是网格划分后的数字（巧的是它们的网格恰好也满足 V − E + F = 2）。</p>
+      <h3>旋转体与三视图</h3>
+      <ul class="keypoints">
+        <li>矩形绕一边旋转 → <b>圆柱</b>；直角三角形绕直角边 → <b>圆锥</b>；半圆绕直径 → <b>球</b>。</li>
+        <li><b>三视图</b>：正视图、侧视图、俯视图——同一个几何体从三个方向投影。旋转几何体时想象一下：它从正面看是什么形状？</li>
+        <li>表面积 / 体积：柱 <span class="tex">V = Sh</span>；锥 <span class="tex">V = \frac{1}{3}Sh</span>；球 <span class="tex">V = \frac{4}{3}\pi r^3,\ S = 4\pi r^2</span>。</li>
+      </ul>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/geometry3d.js" defer></script>
+</body>
+</html>

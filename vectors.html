@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="向量交互实验室：拖动向量端点，看加法的三角形/平行四边形法则、点积与投影的几何意义。">
+  <title>平面向量 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+</head>
+<body data-page="vectors" data-accent="#6366f1">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 7 站 · 平面向量</span>
+      <h1><span class="hero-emoji">🧭</span>向量：既有大小又有方向的量</h1>
+      <p>向量是"会指路的数"。加法怎么走、点积衡量什么——箭头一拖，全在图上。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：向量加减法 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>向量加法 / 减法</h3>
+      <p class="widget-desc"><b>拖动蓝、绿箭头的端点</b>。加法：红色对角线 = <b>a + b</b>（平行四边形法则）；减法：连接两个箭头端点的虚线 = <b>a − b</b>（指向被减数）。</p>
+
+      <div class="controls">
+        <div class="seg" id="vMode">
+          <button type="button" class="on" data-m="add">加法 a + b</button>
+          <button type="button" data-m="sub">减法 a − b</button>
+        </div>
+        <label class="ctrl"><input type="checkbox" id="vTri" checked> 显示三角形法则（b 平移到 a 的终点）</label>
+        <button class="btn" id="vReset">↺ 复位</button>
+      </div>
+
+      <div class="canvas-wrap grab"><canvas id="vCanvas"></canvas></div>
+      <div class="readout">
+        <span class="chip" style="color:#4f46e5">a = <b id="vA">(2, 1)</b></span>
+        <span class="chip" style="color:#0d9463">b = <b id="vB">(1, 2)</b></span>
+        <span class="chip" style="color:#dc2626" id="vResChip">a + b = <b id="vRes">(3, 3)</b></span>
+      </div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>向量的坐标与模</h3>
+      <span class="tex-block tex" data-tex="\vec{a} = (x, y), \qquad |\vec{a}| = \sqrt{x^2 + y^2}"></span>
+      <p>向量 = 有向线段：起点、方向、长度（模）。只关心方向和大小时，向量可以<b>自由平移</b>——这正是三角形法则能"接龙"的原因。</p>
+      <h3>线性运算</h3>
+      <span class="tex-block tex" data-tex="\vec{a} + \vec{b} = (x_1 + x_2,\ y_1 + y_2), \qquad \lambda\vec{a} = (\lambda x,\ \lambda y)"></span>
+      <ul class="keypoints">
+        <li><b>三角形法则</b>：b 的起点接到 a 的终点，则 a + b 从 a 的起点指向 b 的终点。</li>
+        <li><b>平行四边形法则</b>：a、b 共起点，对角线 = a + b（实验 1 里的红色对角线）。</li>
+        <li><b>减法</b>：a − b 从 b 的终点指向 a 的终点（"指向被减数"）。</li>
+      </ul>
+      <h3>数量积（点积）：衡量"方向有多一致"</h3>
+      <span class="tex-block tex" data-tex="\vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|\cos\theta = x_1x_2 + y_1y_2"></span>
+      <p>结果是一个<b>数</b>而不是向量：夹角锐 → 正；直角 → 0；钝角 → 负。<b>a ⊥ b ⇔ a·b = 0</b>，这是解析几何里证垂直的万能钥匙。</p>
+    </section>
+
+    <!-- 实验 2：点积与投影 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>点积与投影</h3>
+      <p class="widget-desc"><b>拖动两个箭头的端点</b>。橙色向量是 b 在 a 方向上的<b>投影</b>；它的长度 = |b|cosθ（带符号）。夹角θ越接近 90°，投影越短，点积越接近 0。</p>
+
+      <div class="canvas-wrap grab"><canvas id="dCanvas" style="height:420px"></canvas></div>
+      <div class="readout">
+        <span class="chip">a·b = x₁x₂ + y₁y₂ = <b id="dNum">—</b></span>
+        <span class="chip">= |a||b|cosθ = <b id="dGeo">—</b></span>
+        <span class="chip">cosθ = <b id="dCos">—</b></span>
+        <span class="chip">θ = <b id="dDeg">—</b></span>
+      </div>
+      <div class="note-box" id="dNote">🎯 试着把 b 拖到与 a 垂直的位置：投影会缩成一个点，点积正好等于 0！</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/vectors.js" defer></script>
+</body>
+</html>

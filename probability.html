@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="概率统计交互实验室：高尔顿钉板、蒙提霍尔问题、大数定律抛硬币——用模拟亲手掷出概率规律。">
+  <title>概率统计 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>">
+</head>
+<body data-page="probability" data-accent="#ef4444">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 8 站 · 概率统计</span>
+      <h1><span class="hero-emoji">🎲</span>概率统计：掷出来的规律</h1>
+      <p>概率最难的地方是"直觉经常错"。好在这里可以直接做几千次实验——钉板里的球、身后的门、抛不完的硬币，让数字告诉你真相。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：高尔顿钉板 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>高尔顿钉板：乱撞出钟形</h3>
+      <p class="widget-desc">小球每碰到一颗钉子就 50/50 地弹向左或右，最后落进下面的格子里。单个小球全凭运气，<b>几千颗球的总体却会"堆"出钟形曲线</b>（二项分布 → 近似正态分布）。</p>
+
+      <div class="controls">
+        <button class="btn" id="g1">投 1 球</button>
+        <button class="btn btn-accent" id="g100">投 100 球</button>
+        <label class="ctrl"><input type="checkbox" id="gAuto"> 自动连投</label>
+        <div class="ctrl"><label>速度</label><input type="range" id="gSpeed" min="1" max="6" step="0.5" value="3"><span class="val" id="gSpeedV">3</span></div>
+        <button class="btn" id="gReset">↺ 清空重来</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="gCanvas" style="height:430px"></canvas></div>
+      <div class="readout">
+        <span class="chip">已投 <b id="gTotal">0</b> 球</span>
+        <span class="chip">紫色曲线 = 理论分布（二项分布 B(10, ½)）</span>
+      </div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>概率：描述随机事件的数</h3>
+      <p>事件 A 发生的可能性大小记作 <span class="tex">P(A) \in [0, 1]</span>。必然事件 P = 1，不可能事件 P = 0。若每个基本事件等可能，则 <span class="tex">P(A) = \dfrac{m}{n}</span>（古典概型）。</p>
+      <h3>独立与二项分布</h3>
+      <span class="tex-block tex" data-tex="P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}"></span>
+      <ul class="keypoints">
+        <li><b>相互独立</b>：A 的结果不影响 B。<b>抛硬币第 6 次不看前 5 次的脸色</b>——每次 P(正面) 仍是 ½。</li>
+        <li>n 次独立重复试验中成功次数 X 服从<b>二项分布 B(n, p)</b>；钉板每层就是一次"抛硬币"。</li>
+        <li>n 很大时二项分布的轮廓接近<b>钟形（正态）曲线</b>——实验 1 里的紫线。</li>
+      </ul>
+      <h3>大数定律与"反直觉"的蒙提霍尔</h3>
+      <ul class="keypoints">
+        <li><b>大数定律</b>：重复次数越多，事件发生的<b>频率</b>越稳定于它的<b>概率</b>。实验 3 亲眼看它收敛。</li>
+        <li><b>蒙提霍尔</b>：换门的胜率是 ⅔，不换只有 ⅓。反直觉？在实验 2 里亲自玩几局，再让程序替你跑一千局。</li>
+      </ul>
+    </section>
+
+    <!-- 实验 2：蒙提霍尔 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>蒙提霍尔：三扇门的抉择</h3>
+      <p class="widget-desc">三扇门，一扇后是 🚗（赢），两扇后是 🐐。<b>先点一扇门</b>——主持人（知道答案）会打开一扇有山羊的门，再给你一次机会：<b>坚持</b>还是<b>换门</b>？</p>
+
+      <div class="doors" id="mhDoors">
+        <div class="door"><button class="door-btn" data-i="0">1</button><div class="door-no">门 1</div></div>
+        <div class="door"><button class="door-btn" data-i="1">2</button><div class="door-no">门 2</div></div>
+        <div class="door"><button class="door-btn" data-i="2">3</button><div class="door-no">门 3</div></div>
+      </div>
+      <div class="mh-log" id="mhLog">点击一扇门开始</div>
+      <div class="controls" style="justify-content:center">
+        <button class="btn" id="mhStay" disabled>坚持不换</button>
+        <button class="btn" id="mhSwitch" disabled>换一扇门</button>
+        <button class="btn" id="mhAuto">⚙️ 自动模拟 1000 局</button>
+        <button class="btn" id="mhReset">清零统计</button>
+      </div>
+      <div class="readout" style="justify-content:center">
+        <span class="chip">手动战绩：换门 <b id="mhSW">0</b> 胜 / 不换 <b id="mhDW">0</b> 胜（共 <b id="mhG">0</b> 局）</span>
+        <span class="chip">模拟 1000 局结果：换门约胜 <b id="mhSim">—</b></span>
+      </div>
+      <div class="note-box">🤯 为什么换门胜率是 ⅔？你初次选中的概率只有 ⅓；主持人<b>知道答案</b>、必定避开汽车开门——这个动作把"另外两扇门的 ⅔ 概率"全部集中到最后一扇门上。</div>
+    </section>
+
+    <!-- 实验 3：大数定律 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 3</span>大数定律：抛硬币</h3>
+      <p class="widget-desc">横轴是抛掷次数（对数刻度），纵轴是"正面比例"。刚开始波动剧烈，抛得越多，比例越贴近 0.5 的虚线——<b>频率稳定于概率</b>。</p>
+
+      <div class="controls">
+        <button class="btn" id="c1">抛 1 次</button>
+        <button class="btn" id="c100">抛 100 次</button>
+        <button class="btn btn-accent" id="c10000">抛 10,000 次</button>
+        <button class="btn" id="cReset">↺ 重置</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="cCanvas" style="height:360px"></canvas></div>
+      <div class="readout">
+        <span class="chip">总次数 <b id="cN">0</b></span>
+        <span class="chip">正面 <b id="cH">0</b> 次</span>
+        <span class="chip">正面频率 = <b id="cP">—</b></span>
+      </div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/probability.js" defer></script>
+</body>
+</html>

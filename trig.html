@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="转动单位圆上的点，亲眼看见 sin、cos、tan 是怎么被“转”出来的，再看 A·sin(ωx+φ)+k 四个参数如何塑造波形。">
+  <title>三角函数 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body data-page="trig" data-accent="#8b5cf6">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 2 站 · 三角函数</span>
+      <h1><span class="hero-emoji">🌀</span>三角函数：转出来的数学</h1>
+      <p>sin、cos、tan 从来不是要硬背的表格——它们只是"单位圆上一个旋转的点"投下的影子。转动它，曲线自己会长出来。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：单位圆 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>会转的单位圆</h3>
+      <p class="widget-desc">在左图<b>拖动圆上的点</b>（或点播放让它自己转），右图会同步"扫"出 sin 与 cos 的曲线。留意三条彩色线段的长度，就是三个三角函数值。</p>
+
+      <div class="unit-flex">
+        <div class="canvas-wrap" style="flex:0 0 auto;width:min(360px,100%)"><canvas id="uCircle" class="square"></canvas></div>
+        <div class="canvas-wrap" style="flex:1 1 260px;min-width:240px"><canvas id="uWave" style="height:100%"></canvas></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-accent" id="uPlay">▶ 播放旋转</button>
+        <label class="ctrl"><input type="checkbox" id="uSnap"> 吸附特殊角（15° 的倍数）</label>
+        <div class="ctrl"><label>转速</label><input type="range" id="uSpeed" min="0.2" max="3" step="0.1" value="1"><span class="val" id="uSpeedV">1.0</span></div>
+      </div>
+      <div class="readout">
+        <span class="chip">θ = <b id="uTheta"></b></span>
+        <span class="chip" style="color:#e05252">sin θ = <b id="uSin">0</b></span>
+        <span class="chip" style="color:#d97706">cos θ = <b id="uCos">1</b></span>
+        <span class="chip" style="color:#0d9488">tan θ = <b id="uTan">0</b></span>
+      </div>
+      <div class="note-box">🎯 看图说话：橙线（cos）是 P 点的<b>横坐标</b>，红线（sin）是<b>纵坐标</b>；角 θ 转到 ±90° 时橙线缩成 0，分母为 0，所以 tan θ <b>不存在</b>——这就是"正切值不存在的角"的几何来源。</div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>弧度制：用弧长量角度</h3>
+      <p>弧长等于半径的圆心角就是 1 弧度（rad）。<b>180° = π rad</b>，所以 <span class="tex">1\text{ rad} \approx 57.3^\circ</span>。弧长与扇形面积公式在弧度制下非常简洁：</p>
+      <span class="tex-block tex" data-tex="l = \alpha r, \qquad S = \dfrac{1}{2}\alpha r^2"></span>
+      <h3>单位圆定义（三角函数的本源）</h3>
+      <p>设角 θ 的终边与单位圆交于点 <span class="tex">P(x, y)</span>，则 <span class="tex">\cos\theta = x,\ \sin\theta = y,\ \tan\theta = \dfrac{y}{x}\ (x \neq 0)</span>。这个定义自动适用于<b>任意角</b>（包括负角与大于 360° 的角）。</p>
+      <h3>必备诱导公式（图像一转就能看出来）</h3>
+      <ul class="keypoints">
+        <li>周期性：<span class="tex">\sin(\theta + 2\pi) = \sin\theta</span>，转一圈回到原点，所以 y = sin x 的<b>周期 T = 2π</b>。</li>
+        <li>奇偶性：<span class="tex">\sin(-\theta) = -\sin\theta</span>（奇），<span class="tex">\cos(-\theta) = \cos\theta</span>（偶）。</li>
+        <li>互化：<span class="tex">\sin(\pi - \theta) = \sin\theta,\quad \sin\left(\tfrac{\pi}{2} - \theta\right) = \cos\theta</span>。</li>
+      </ul>
+    </section>
+
+    <!-- 实验 2：波形实验室 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>波形实验室 y = A·sin(ωx+φ) + k</h3>
+      <p class="widget-desc">灰色虚线是基准波 y = sin x。逐个拖动四个参数，观察每个参数"负责"图形的哪一部分。</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>A 振幅</label><input type="range" id="wA" min="0.2" max="3" step="0.1" value="1"><span class="val" id="wAv">1</span></div>
+        <div class="ctrl"><label>ω 角频率</label><input type="range" id="wW" min="0.1" max="4" step="0.05" value="1"><span class="val" id="wWv">1</span></div>
+        <div class="ctrl"><label>φ 初相</label><input type="range" id="wP" min="-3.14" max="3.14" step="0.05" value="0"><span class="val" id="wPv">0</span></div>
+        <div class="ctrl"><label>k 上下平移</label><input type="range" id="wK" min="-2" max="2" step="0.1" value="0"><span class="val" id="wKv">0</span></div>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="wCanvas"></canvas></div>
+      <div class="tex-block tex" id="wTex" data-tex="y = \sin x"></div>
+      <div class="readout">
+        <span class="chip">振幅 |A| = <b id="wAmp">1</b></span>
+        <span class="chip">周期 T = 2π/ω = <b id="wPer">6.28</b></span>
+        <span class="chip">值域 <b id="wRange">[-1, 1]</b></span>
+      </div>
+      <div class="note-box">🧠 记忆锚点：<b>A 管高矮</b>（上下拉伸），<b>ω 管胖瘦</b>（周期变短），<b>φ 管左右</b>（向左平移 φ 个单位），<b>k 管高低</b>（向上平移）。最大值 = k + |A|，最小值 = k − |A|。</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/trig.js" defer></script>
+</body>
+</html>

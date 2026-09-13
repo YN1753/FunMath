@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="函数图像实验室：输入表达式、拖动参数滑块，实时观察函数图像如何变化，还能亲手平移缩放坐标系。">
+  <title>函数 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+</head>
+<body data-page="functions" data-accent="#3b82f6">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 1 站 · 函数</span>
+      <h1><span class="hero-emoji">📈</span>函数：让图像随手起舞</h1>
+      <p>函数是整个高中数学的"通用语言"。别急着背性质——先在实验室里输入一条函数，拖动参数，看看图像是怎么回应你的每一次操作。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：图像实验室 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>函数图像实验室</h3>
+      <p class="widget-desc">选一个模板拖滑块，或直接输入你自己的表达式（支持 x、pi、e 和 sin / cos / tan / sqrt / abs / ln / log）。在画布上<b>拖动可平移、滚轮可缩放</b>，鼠标移到曲线上还能读数。</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>模板</label>
+          <select id="fTpl"></select>
+        </div>
+        <div class="ctrl"><label>表达式</label>
+          <input type="text" id="fExpr" class="mono" style="width:230px" spellcheck="false">
+        </div>
+      </div>
+      <div class="controls" id="fSliders"></div>
+
+      <div class="canvas-wrap grab"><canvas id="fCanvas"></canvas></div>
+
+      <div class="tex-block tex" id="fTex" data-tex="y = x^2"></div>
+      <div class="readout">
+        <span class="chip" id="fParity">奇偶性：…</span>
+        <span class="chip">🟥 <b>递增</b> 段 · 🟦 <b>递减</b> 段（按数值导数着色）</span>
+        <span class="chip" id="fTrace" style="display:none"></span>
+      </div>
+      <div class="err-msg" id="fErr"></div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>什么是函数？</h3>
+      <p>设 <b>A、B 是非空的数集</b>，如果对 A 中<b>任意</b>一个 x，按照某种对应关系 f，在 B 中都有<b>唯一确定</b>的 y 与之对应，就称 <span class="tex">y = f(x),\; x \in A</span>。<b>定义域、对应关系、值域</b>是函数的三要素。</p>
+      <h3>三大性质怎么看图像？</h3>
+      <ul class="keypoints">
+        <li><b>单调性</b>：沿 x 轴正方向图像"上坡"为增函数，"下坡"为减函数。上面实验里的红 / 蓝着色就是它在图像上的样子。</li>
+        <li><b>奇偶性</b>：偶函数满足 <span class="tex">f(-x) = f(x)</span>，图像关于 <b>y 轴</b>对称；奇函数满足 <span class="tex">f(-x) = -f(x)</span>，图像关于<b>原点</b>对称。</li>
+        <li><b>最值</b>：图像的最高点 / 最低点对应最大值 / 最小值，常在单调区间的端点或对称轴处取得。</li>
+      </ul>
+      <h3>指对数是一对互逆运算</h3>
+      <span class="tex-block tex" data-tex="a^{\log_a x} = x \quad (a>0,\ a \neq 1)"></span>
+      <p>指数函数 <span class="tex">y = a^x</span> 底数 <span class="tex">a>1</span> 时爆炸式增长，<span class="tex">0<a<1</span> 时衰减；对数函数 <span class="tex">y=\log_a x</span> 是它的反函数，增长越来越"懒"。在实验 1 里把模板切到"指数 / 对数"拖一拖 b 就能感受到。</p>
+    </section>
+
+    <!-- 实验 2：图像变换 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>图像变换实验台</h3>
+      <p class="widget-desc">灰色虚线是"母函数"，彩色实线是变换后的 <span class="tex">y = a\,f(x-h) + k</span>。拖动滑块，验证口诀：<b>左加右减、上加下减；a 拉伸、负号翻折</b>。</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>母函数</label>
+          <select id="tBase"></select>
+        </div>
+        <div class="ctrl"><label>a 伸缩</label><input type="range" id="tA" min="-3" max="3" step="0.1" value="1"><span class="val" id="tAv">1</span></div>
+        <div class="ctrl"><label>h 平移</label><input type="range" id="tH" min="-3" max="3" step="0.1" value="0"><span class="val" id="tHv">0</span></div>
+        <div class="ctrl"><label>k 平移</label><input type="range" id="tK" min="-3" max="3" step="0.1" value="0"><span class="val" id="tKv">0</span></div>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="tCanvas"></canvas></div>
+      <div class="tex-block tex" id="tTex" data-tex="y = x^2"></div>
+      <div class="note-box">🧠 记忆锚点：<b>h 决定左右</b>（x−2 表示向右 2 格，容易错！），<b>k 决定上下</b>，<b>a 的绝对值决定胖瘦、符号决定开口朝向</b>。</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/parser.js" defer></script>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/functions.js" defer></script>
+</body>
+</html>

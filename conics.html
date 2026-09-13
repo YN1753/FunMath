@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="圆锥曲线交互实验室：拖动离心率看椭圆连续变身抛物线、双曲线；用一根绳子画椭圆。">
+  <title>圆锥曲线 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>">
+</head>
+<body data-page="conics" data-accent="#ec4899">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 5 站 · 圆锥曲线</span>
+      <h1><span class="hero-emoji">🪐</span>圆锥曲线：一个数字变出三种曲线</h1>
+      <p>椭圆、抛物线、双曲线其实是"一家人"——差别只在一个数：离心率 e。行星轨道、探照灯、冷却塔，全是它们的化身。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：离心率变形记 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>离心率变形记（统一定义）</h3>
+      <p class="widget-desc">曲线上的动点 P 满足：<b>到焦点 F 的距离 = e × 到定直线 l 的距离</b>。拖动 e 滑块，看曲线从圆滚滚的椭圆连续变成抛物线、再裂开成双曲线！</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>离心率 e</label><input type="range" id="cE" min="0.1" max="1.9" step="0.02" value="0.5"><span class="val" id="cEv">0.5</span></div>
+        <div class="ctrl"><label>焦准距 p</label><input type="range" id="cP" min="1" max="3" step="0.1" value="2"><span class="val" id="cPv">2</span></div>
+        <button class="btn btn-accent" id="cPlay">⏸ 暂停</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="cCanvas"></canvas></div>
+      <div class="readout">
+        <span class="chip" id="cType">类型：椭圆</span>
+        <span class="chip" style="color:#ec4899">|PF| = <b id="cPF">—</b></span>
+        <span class="chip" style="color:#0d9488">|PL| = <b id="cPL">—</b></span>
+        <span class="chip">|PF| / |PL| = <b id="cRatio">—</b> = e ✓</span>
+      </div>
+      <div class="note-box">🎯 看图：粉线段是 P 到焦点 F 的距离，绿线段是 P 到定直线 l 的垂线段。<b>无论 P 跑到哪里，两者之比始终等于 e</b>——这就是三种圆锥曲线的统一定义：e&lt;1 椭圆，e=1 抛物线，e&gt;1 双曲线。</div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>三种曲线的标准方程（焦点在 x 轴）</h3>
+      <span class="tex-block tex" data-tex="\text{椭圆：}\ \dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} = 1 \quad (a>b>0),\ e = \dfrac{c}{a} \in (0,1)"></span>
+      <span class="tex-block tex" data-tex="\text{双曲线：}\ \dfrac{x^2}{a^2} - \dfrac{y^2}{b^2} = 1,\ e = \dfrac{c}{a} > 1,\ \text{渐近线 } y = \pm\dfrac{b}{a}x"></span>
+      <span class="tex-block tex" data-tex="\text{抛物线：}\ y^2 = 2px\ (p>0),\ e = 1,\ \text{焦点 } \left(\dfrac{p}{2}, 0\right)"></span>
+      <ul class="keypoints">
+        <li><b>椭圆</b>：到两定点距离之和为定值 2a（实验 2 亲自拉绳子）；<span class="tex">a^2 = b^2 + c^2</span>；e 越大越扁。</li>
+        <li><b>双曲线</b>：到两定点距离之差的绝对值为定值 2a；<span class="tex">c^2 = a^2 + b^2</span>（注意与椭圆相反！）。</li>
+        <li><b>抛物线</b>：到定点与定直线距离相等；<span class="tex">p</span> 是焦点到准线的距离。</li>
+        <li><b>统一定义</b>：到定点距离与到定直线距离之比为 e。天体轨道都是椭圆（e 很小接近圆），彗星轨道 e 接近 1。</li>
+      </ul>
+    </section>
+
+    <!-- 实验 2：绳索画椭圆 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>用一根绳子画椭圆</h3>
+      <p class="widget-desc">图板上钉两枚图钉（焦点 F₁、F₂），用一根长度 2a 的绳子套住铅笔拉紧画一圈——铅笔轨迹就是椭圆！盯住右上角的距离和，它<b>始终等于绳长 2a</b>。</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>绳长的一半 a</label><input type="range" id="eA" min="2.5" max="4.5" step="0.1" value="3.5"><span class="val" id="eAv">3.5</span></div>
+        <div class="ctrl"><label>图钉间距半宽 c</label><input type="range" id="eC" min="0.5" max="4" step="0.05" value="2"><span class="val" id="eCv">2</span></div>
+        <button class="btn btn-accent" id="ePlay">⏸ 暂停</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="eCanvas" class="grab"></canvas></div>
+      <div class="readout">
+        <span class="chip">|PF₁| + |PF₂| = <b id="eSum">—</b> = 2a ✓</span>
+        <span class="chip">b = √(a²−c²) = <b id="eB">—</b></span>
+        <span class="chip">离心率 e = c/a = <b id="eEcc">—</b></span>
+      </div>
+      <div class="note-box">✋ 动手试试：把 c 拖大（图钉分得更开），椭圆变<b>扁</b>；把 c 拖到接近 a，绳子几乎拉直，椭圆扁成一条线；c = 0（两钉重合）时就是<b>圆</b>。</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/conics.js" defer></script>
+</body>
+</html>

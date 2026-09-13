@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="等差、等比数列的柱状生长动画，亲手调公差公比；斐波那契螺线里藏着黄金分割 0.618。">
+  <title>数列 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body data-page="sequences" data-accent="#10b981">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 3 站 · 数列</span>
+      <h1><span class="hero-emoji">🌱</span>数列：会生长的数字</h1>
+      <p>数列就是"排好队的数字"。等差数列匀速生长，等比数列爆炸式生长——拖动滑块你就懂了；而斐波那契数列里，还藏着大自然的黄金分割。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：等差等比 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>等差 vs 等比生长实验</h3>
+      <p class="widget-desc">切换数列类型，调整首项与公差 / 公比，点「播放生长」看 12 项依次长出来。注意 q &gt; 1 时等比数列的"指数爆炸"。</p>
+
+      <div class="controls">
+        <div class="seg" id="sMode">
+          <button type="button" class="on" data-m="ap">等差数列</button>
+          <button type="button" data-m="gp">等比数列</button>
+        </div>
+        <div class="ctrl"><label>首项 a₁</label><input type="range" id="sA1" min="-5" max="10" step="0.5" value="1"><span class="val" id="sA1v">1</span></div>
+        <div class="ctrl" id="sDRow"><label>公差 d</label><input type="range" id="sD" min="-4" max="4" step="0.1" value="1.5"><span class="val" id="sDv">1.5</span></div>
+        <div class="ctrl" id="sQRow" style="display:none"><label>公比 q</label><input type="range" id="sQ" min="-3" max="3" step="0.1" value="1.3"><span class="val" id="sQv">1.3</span></div>
+        <button class="btn btn-accent" id="sPlay">▶ 播放生长</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="sCanvas"></canvas></div>
+      <div class="tex-block tex" id="sTex" data-tex="a_n = a_1 + (n-1)d"></div>
+      <div class="readout">
+        <span class="chip">前 12 项和 S₁₂ = <b id="sSum">—</b></span>
+        <span class="chip" id="sWarn" style="display:none;color:#b45309">⚠️ 数值增长太快，柱高已按比例压缩显示</span>
+      </div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>等差数列：每一步加同一个数</h3>
+      <span class="tex-block tex" data-tex="a_n = a_1 + (n-1)d, \qquad S_n = \dfrac{n(a_1 + a_n)}{2}"></span>
+      <p>图像上，等差数列的点<b>落在一条直线上</b>（斜率就是公差 d）。求和公式相当于"梯形面积"——首尾相加乘以项数除以 2。</p>
+      <h3>等比数列：每一步乘同一个数</h3>
+      <span class="tex-block tex" data-tex="a_n = a_1 \cdot q^{\,n-1}, \qquad S_n = \dfrac{a_1(1 - q^n)}{1 - q} \ (q \neq 1)"></span>
+      <p>图像上，等比数列的点<b>落在一条指数曲线上</b>。当 |q|&gt;1 时增长极快（"棋盘麦粒"故事就是它）；当 |q|&lt;1 时趋于 0。q &lt; 0 时正负交错。</p>
+      <h3>斐波那契与黄金分割</h3>
+      <span class="tex-block tex" data-tex="F_1 = F_2 = 1,\quad F_n = F_{n-1} + F_{n-2}"></span>
+      <p>1, 1, 2, 3, 5, 8, 13, 21…相邻两项之比 <span class="tex">\dfrac{F_{n+1}}{F_n}</span> 会越来越接近 <b>0.618</b>——这正是黄金分割数 <span class="tex">\varphi = \dfrac{\sqrt{5}-1}{2} \approx 0.618</span>（它的倒数 <span class="tex">1/\varphi = \dfrac{1+\sqrt{5}}{2} \approx 1.618</span>，常被称为"黄金比"）。用边长为斐波那契数的正方形拼下去，永远拼出一个"黄金矩形"。</p>
+    </section>
+
+    <!-- 实验 2：斐波那契螺线 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>斐波那契螺线：大自然的曲线</h3>
+      <p class="widget-desc">边长 1, 1, 2, 3, 5, 8…的正方形依次拼合，每块里画一段四分之一圆弧，连起来就是斐波那契螺线——鹦鹉螺壳、向日葵籽排列都近似它。</p>
+
+      <div class="canvas-wrap"><canvas id="fCanvas" style="height:420px"></canvas></div>
+      <div class="controls">
+        <button class="btn btn-accent" id="fReplay">▶ 重播拼合</button>
+        <span class="chip">相邻项之比：<b id="fRatio">—</b> → 0.618…</span>
+      </div>
+      <div class="note-box">🌿 观察：每新拼一块正方形，整体始终是一个<b>矩形</b>（黄金矩形）。把最大的矩形缩小再拼，图案可以无限延续——这就是"自相似"。</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/sequences.js" defer></script>
+</body>
+</html>

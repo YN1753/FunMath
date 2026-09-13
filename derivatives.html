@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="导数交互实验室：看割线如何随 h→0 变成切线，拖动曲线上的点，把导函数的图像亲手描出来。">
+  <title>导数 · 数趣星球</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
+</head>
+<body data-page="derivatives" data-accent="#f59e0b">
+
+  <nav id="site-nav"></nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <span class="hero-eyebrow">第 4 站 · 导数</span>
+      <h1><span class="hero-emoji">📐</span>导数：斜率的"进化论"</h1>
+      <p>导数 = 瞬时变化率 = 切线斜率。听起来抽象？在这两台"机器"里，你会亲眼看着割线缩成切线、看着导函数的图像一点一点被描出来。</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 实验 1：割线 → 切线 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 1</span>看割线缩成切线</h3>
+      <p class="widget-desc">曲线上有两个点：<b>P（可拖动）</b>和 <b>Q</b>。拖动 h 滑块让 Q 靠近 P，橙色割线的斜率就会逼近紫色虚线（切线）的斜率——点「h→0 动画」看这个极限过程。</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>函数</label>
+          <select id="dFun">
+            <option value="0">f(x) = x²</option>
+            <option value="1">f(x) = x³ − 3x</option>
+            <option value="2">f(x) = sin x</option>
+            <option value="3">f(x) = eˣ/2</option>
+          </select>
+        </div>
+        <div class="ctrl"><label>P 点 x₀</label><input type="range" id="dX0" min="-2.8" max="2.8" step="0.05" value="0.5"><span class="val" id="dX0v">0.5</span></div>
+        <div class="ctrl"><label>h（Q−P）</label><input type="range" id="dH" min="-2" max="2" step="0.01" value="1.5"><span class="val" id="dHv">1.5</span></div>
+        <button class="btn btn-accent" id="dPlay">⏩ h→0 动画</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="dCanvas"></canvas></div>
+      <div class="readout">
+        <span class="chip" style="color:#ea580c">割线斜率 k = <b id="dSec">—</b></span>
+        <span class="chip" style="color:#b45309">切线斜率 f′(x₀) = <b id="dTan">—</b></span>
+        <span class="chip">h = <b id="dHh">1.5</b></span>
+      </div>
+      <div class="note-box">🧠 核心思想：当 <b>h → 0</b>（Q 无限逼近 P），平均变化率 <span class="tex">\dfrac{f(x_0+h)-f(x_0)}{h}</span> 的极限就是<b>瞬时变化率</b>——导数。割线是"过程"，切线是"结果"。</div>
+    </section>
+
+    <!-- 知识点 -->
+    <section class="card">
+      <h2>📖 知识点速览</h2>
+      <h3>导数的定义</h3>
+      <span class="tex-block tex" data-tex="f'(x_0) = \lim_{h \to 0} \dfrac{f(x_0+h) - f(x_0)}{h}"></span>
+      <p>几何意义：<b>曲线 y = f(x) 在点 (x₀, f(x₀)) 处切线的斜率</b>；物理意义：瞬时速度。切线方程：</p>
+      <span class="tex-block tex" data-tex="y = f(x_0) + f'(x_0)(x - x_0)"></span>
+      <h3>求导公式速查</h3>
+      <span class="tex-block tex" data-tex="(C)' = 0, \quad (x^n)' = nx^{n-1}, \quad (\sin x)' = \cos x, \quad (e^x)' = e^x, \quad (\ln x)' = \dfrac{1}{x}"></span>
+      <h3>导数怎么"用"？</h3>
+      <ul class="keypoints">
+        <li><b>单调性</b>：区间上 <span class="tex">f'(x) > 0</span> ⇒ 增函数；<span class="tex">f'(x) < 0</span> ⇒ 减函数。实验 2 里导数在 x 轴上方的那段，原函数正在"上坡"。</li>
+        <li><b>极值</b>：f′(x) = 0 且<b>两侧变号</b>处取得极值（正变负是极大，负变正是极小）。</li>
+        <li><b>最值</b>：比较所有极值与区间端点值。</li>
+      </ul>
+    </section>
+
+    <!-- 实验 2：导函数描迹 -->
+    <section class="card widget-card">
+      <h3 class="widget-title"><span class="badge-step">实验 2</span>亲手描出导函数</h3>
+      <p class="widget-desc">上半部分：原函数与切线；<b>左右拖动橙色点</b>（或点「自动扫描」）。下半部分会把每个位置的切线斜率记成一个点——点连起来，就是导函数 f′(x) 的图像！</p>
+
+      <div class="controls">
+        <div class="ctrl"><label>函数</label>
+          <select id="gFun">
+            <option value="0">f(x) = x²</option>
+            <option value="1">f(x) = x³ − 3x</option>
+            <option value="2">f(x) = sin x</option>
+            <option value="3">f(x) = eˣ/2</option>
+          </select>
+        </div>
+        <button class="btn btn-accent" id="gScan">▶ 自动扫描</button>
+        <button class="btn" id="gReset">🧹 清除轨迹</button>
+      </div>
+
+      <div class="canvas-wrap"><canvas id="gCanvas" style="height:460px"></canvas></div>
+      <div class="note-box">🔍 检验成果：x² 的导数是一条<b>直线</b>（f′ = 2x）；sin x 的导数是它"左移四分之一周期"（f′ = cos x）；x³−3x 的导数是条抛物线，与 x 轴的两个交点 ±1 正好对应原函数的<b>峰和谷</b>。</div>
+    </section>
+
+    <section class="card" id="quiz"></section>
+    <div class="pager"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/js/derivatives.js" defer></script>
+</body>
+</html>
