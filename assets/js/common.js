@@ -371,6 +371,69 @@
     }
   }
 
+  /* ---------------- 视觉增强 ---------------- */
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 页头漂浮数学符号 */
+  function heroDecor() {
+    if (REDUCED) return;
+    var glyphs = ['∑', 'π', '∫', '√', '∞', 'Δ', 'θ', 'φ', 'ω', '±', '≈', '∇'];
+    document.querySelectorAll('.page-hero, .index-hero').forEach(function (hero) {
+      if (hero.querySelector('.hero-glyphs')) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'hero-glyphs';
+      wrap.setAttribute('aria-hidden', 'true');
+      for (var i = 0; i < 9; i++) {
+        var s = document.createElement('span');
+        s.textContent = glyphs[(i * 5 + 3) % glyphs.length];
+        s.style.left = (3 + (i * 12.7) % 93) + '%';
+        s.style.top = (6 + (i * 29.7) % 72) + '%';
+        s.style.fontSize = (15 + (i * 13) % 26) + 'px';
+        s.style.animationDuration = (7 + (i % 5) * 1.9) + 's';
+        s.style.animationDelay = (-i * 1.4) + 's';
+        wrap.appendChild(s);
+      }
+      hero.appendChild(wrap);
+    });
+  }
+
+  /* 滚动显现（带兜底：1.4s 后全部显示，避免意外不可见） */
+  function revealInit() {
+    var els = document.querySelectorAll('main > .card, main > .pager, .home-section, .progress-band');
+    if (REDUCED || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.06 });
+    els.forEach(function (el, i) {
+      el.classList.add('reveal');
+      el.style.transitionDelay = Math.min(i * 70, 280) + 'ms';
+      io.observe(el);
+    });
+    setTimeout(function () {
+      els.forEach(function (el) { el.classList.add('in'); });
+    }, 1400);
+  }
+
+  /* 首页统计数字滚动 */
+  function countUp() {
+    if (REDUCED) return;
+    document.querySelectorAll('.index-stats .stat b').forEach(function (el) {
+      var m = el.textContent.match(/^(\d+)(.*)$/);
+      if (!m || !+m[1]) return;
+      var target = +m[1], suffix = m[2], t0 = null, dur = 950;
+      el.textContent = '0' + suffix;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
   /* ---------------- 启动 ---------------- */
   function boot() {
     var accent = document.body.dataset.accent;
@@ -379,6 +442,9 @@
     renderFooter();
     renderPager();
     renderTopicProgress();
+    heroDecor();
+    revealInit();
+    countUp();
     loadKatex();
     renderTexAll(); // CDN 已缓存时立即渲染，否则等 onload
   }
