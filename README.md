@@ -19,20 +19,19 @@
 
 每个主题配 **知识点速览**（KaTeX 公式）与 **5 道即判小测**（含解析），答题进度自动保存在浏览器 `localStorage`，首页有总进度环。
 
-## 🚀 部署到 GitHub Pages（3 步）
+## 🚀 部署到 GitHub Pages（GitHub Actions，全自动）
 
-1. 把本仓库推到 GitHub（仓库名任意，如 `FunMath`）：
-   ```bash
-   git remote add origin git@github.com:YN1753/FunMath.git
-   git push -u origin main
-   ```
-2. 打开仓库页面 → **Settings** → 左侧 **Pages**。
-3. **Build and deployment** 下选择：
-   - Source: `Deploy from a branch`
-   - Branch: `main`，目录 `/ (root)`
-   - 点 **Save**。
+仓库自带工作流 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)：
 
-一两分钟后访问 `https://YN1753.github.io/FunMath/` 即可。之后每次 `git push` 网站自动更新。
+- **首次部署**：仓库已有工作流，推送到 `main` 即自动部署。若仓库从未开启过 Pages，工作流会通过 `configure-pages` 的 `enablement` 自动开启（个人仓库无需手动设置）。
+- **日常更新**：每次 `git push` 到 `main` 自动重新部署，也可在 Actions 页面手动触发（`workflow_dispatch`）。
+- 部署完成后访问 `https://<用户名>.github.io/<仓库名>/`，例如 `https://YN1753.github.io/FunMath/`。
+
+<details>
+<summary>如果之前用过「Deploy from a branch」方式</summary>
+
+Settings → Pages → Build and deployment → Source 改为 **GitHub Actions**，否则 `deploy-pages` 步骤会报 legacy 配置错误。
+</details>
 
 > 无需任何构建步骤：仓库里没有 package.json，全站就是 HTML/CSS/JS 静态文件；`.nojekyll` 保证资源原样发布。
 
